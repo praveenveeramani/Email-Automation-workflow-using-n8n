@@ -16,4 +16,5 @@ This project automates Gmail responses using n8n. It classifies incoming emails 
 
 ## File
 - `Email automation.json` → n8n workflow export
-![Uploading Screenshot 2025-11-07 211212.png…]()
+  
+<img width="1910" height="928" alt="Screenshot 2025-11-07 211212" src="https://github.com/user-attachments/assets/eb1415a6-ea83-4f22-8f56-49b93a675bd4" />

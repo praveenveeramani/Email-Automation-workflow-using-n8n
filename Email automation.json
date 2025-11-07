@@ -1,0 +1,447 @@
+{
+  "name": "Email automation",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        416
+      ],
+      "id": "66ebf447-3767-4134-9765-3cfe58d8e708",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ToI2VSF1QFygGnP3",
+          "name": "prvn_officeuse_connected"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Important",
+              "description": "=This category includes emails that carry high-priority information, time-sensitive updates, critical instructions, or urgent matters that require immediate human attention. Messages in this category are typically essential for business operations or decision-making and cannot be ignored or delayed."
+            },
+            {
+              "category": "Personal",
+              "description": "=This category refers to emails that contain friendly, informal, or non-business communication between individuals. These messages usually relate to personal matters, casual conversation, greetings, or any interaction not associated with organizational tasks or commercial intent."
+            },
+            {
+              "category": "Transaction",
+              "description": "=This category includes automated or semi-automated emails generated from business systems such as purchase receipts, order confirmations, invoices, billing updates, account notifications, shipment tracking, service renewals, or payment statuses. They serve as official records of a completed or ongoing transaction."
+            },
+            {
+              "category": "Other",
+              "description": "=This category captures any email that does not clearly fall into the defined groups. It may include general announcements, mixed-intention messages, vague content, or communication without a dominant purpose. If the classifier cannot confidently assign another label, the email is placed here by default"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        384
+      ],
+      "id": "8d83e3aa-f6f8-4fbe-8251-37dc3b01ede0",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        672
+      ],
+      "id": "e15e230e-eb1b-4ca1-b9b6-83b57033cea3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "o130jqmqKofM3wau",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        656,
+        800
+      ],
+      "id": "520cb7c3-2ddf-41bf-891a-d5392abba780",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        736,
+        96
+      ],
+      "id": "c23607b0-b930-44ff-a896-6d01d2cdf070",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "o130jqmqKofM3wau",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        384
+      ],
+      "id": "49136b84-9af3-4e47-8b7b-fb4bd284fb3b",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "o130jqmqKofM3wau",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        656
+      ],
+      "id": "d334d18c-1337-4ee3-abda-e26f2a1492fb",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "o130jqmqKofM3wau",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.snippet }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an AI email assistant. Your task is to draft a concise, professional, and polite reply to an important and time-sensitive email.  Acknowledge the urgency, provide clarity, and request any missing information if required.  Keep the tone formal and responsible.  Output only the email response text without explanations."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        640,
+        -64
+      ],
+      "id": "49f81da5-c1cf-4b6a-9bf9-bb5d0844d6a1",
+      "name": "Important mail LLM chain"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.snippet }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an AI email assistant. The email is personal or informal in nature.  Draft a warm, friendly, and natural response that feels human and conversational.  Keep the tone casual but respectful.  Output only the email response text without explanations."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        640,
+        208
+      ],
+      "id": "909df3a9-3632-4663-99fe-beda953480d0",
+      "name": "Personal mail LLM chain"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.snippet }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an AI email assistant. The email is transactional (e.g., order, invoice, confirmation, billing, or tracking).  Draft a clear, direct, and factual response.  Acknowledge the transaction, confirm details, and provide any missing information or next steps.  Keep the tone formal and precise.  Output only the email response text without explanations."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        656,
+        496
+      ],
+      "id": "e46579c4-3ba3-4913-8be4-201eab6bd744",
+      "name": "Transaction mail LLM chain"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Text Classifier').item.json.Subject }}",
+        "message": "={{ $json.text }}",
+        "options": {
+          "threadId": "={{ $('Text Classifier').item.json.threadId }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        208
+      ],
+      "id": "a0152b64-2c40-481c-8eff-e3bf398af452",
+      "name": "Create a draft1",
+      "webhookId": "4e68f21f-72de-4c77-b7fa-3381234edc5f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ToI2VSF1QFygGnP3",
+          "name": "prvn_officeuse_connected"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Text Classifier').item.json.Subject }}",
+        "message": "={{ $json.text }}",
+        "options": {
+          "threadId": "={{ $('Text Classifier').item.json.threadId }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        496
+      ],
+      "id": "2b19d64f-fcd8-4a5c-8651-6f5d8aeef8ed",
+      "name": "Create a draft2",
+      "webhookId": "4e68f21f-72de-4c77-b7fa-3381234edc5f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ToI2VSF1QFygGnP3",
+          "name": "prvn_officeuse_connected"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Text Classifier').item.json.Subject }}",
+        "message": "={{ $json.text }}",
+        "options": {
+          "threadId": "={{ $('Text Classifier').item.json.threadId }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        -64
+      ],
+      "id": "218bd253-0162-4a97-9f67-9fd9b0a9e49f",
+      "name": "Create a draft3",
+      "webhookId": "4e68f21f-72de-4c77-b7fa-3381234edc5f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ToI2VSF1QFygGnP3",
+          "name": "prvn_officeuse_connected"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Important mail LLM chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Personal mail LLM chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Transaction mail LLM chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Important mail LLM chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Personal mail LLM chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Transaction mail LLM chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Important mail LLM chain": {
+      "main": [
+        [
+          {
+            "node": "Create a draft3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal mail LLM chain": {
+      "main": [
+        [
+          {
+            "node": "Create a draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transaction mail LLM chain": {
+      "main": [
+        [
+          {
+            "node": "Create a draft2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4176c8e5-65d3-417e-88ea-3d8f101303a2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "982da3384d604073aca2c8bfe17fbd51cfac8672ac660f0cfb6061dba9e1195b"
+  },
+  "id": "blLgnJ0tEKz03gdj",
+  "tags": []
+}
